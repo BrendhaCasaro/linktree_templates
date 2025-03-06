@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile</title>
+</head>
+<body>
+    <h1>Profile Page</h1>
+    <p id="username">Loading...</p>
+
+    <script>
+        const username = window.location.pathname.substring(1); // Get the username from the URL
+        document.getElementById("username").innerText = `Welcome, ${username}!`;
+        const url = 'http://127.0.0.1:3000/create'
+        const response = fetch(url)
+
+        if(!response.ok) {
+            document.innerText = 'Hello'
+        }
+
+    </script>
+</body>
+</html>
