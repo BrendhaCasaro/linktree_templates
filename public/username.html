@@ -7,18 +7,40 @@
 </head>
 <body>
     <h1>Profile Page</h1>
-    <p id="username">Loading...</p>
+    <ul id="links">
+    </ul>
 
     <script>
         const username = window.location.pathname.substring(1); // Get the username from the URL
-        document.getElementById("username").innerText = `Welcome, ${username}!`;
-        const url = 'http://127.0.0.1:3000/create'
-        const response = fetch(url)
+        const linksRef = document.querySelector("#links");
 
-        if(!response.ok) {
-            document.innerText = 'Hello'
+        async function listSocialLinksByUsername(username) {
+          try {
+            const url = `http://localhost:3000/social_links/${username}`;
+            const response = await fetch(url);
+            if (!response.ok) {
+              throw new Error(`Error on request (status: ${response.status});`, response);
+            }
+
+            const socialLinks = await response.json();
+            return socialLinks;
+          } catch(e) {
+            console.error(e);
+            return { error: e.message };
+          }
         }
 
+        const socialLinks = listSocialLinksByUsername(username)
+          .then(links => {
+            let htmlLists = "";
+            for (const l of links) {
+              htmlLists += `<li>
+                <a href="${l.url}">${l.description}</a>
+              </li>`
+            }
+
+            linksRef.innerHTML = htmlLists;
+          });
     </script>
 </body>
 </html>
